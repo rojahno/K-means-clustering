@@ -3,16 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# IMPORTANT: DO NOT USE ANY OTHER 3RD PARTY PACKAGES
-# (math, random, collections, functools, etc. are perfectly fine)
 from pandas import DataFrame
 
 
 class KMeans:
 
     def __init__(self, k=2, iterations=100, original_data=None):
-        # NOTE: Feel free add any hyperparameters
-        # (with defaults) as you see fit
         self.k = k
         self.z = None
         self.centroids = None
@@ -211,10 +207,6 @@ def euclidean_silhouette(X, z):
     """
     Computes the average Silhouette Coefficient with euclidean distance
 
-    More info:
-        - https://www.sciencedirect.com/science/article/pii/0377042787901257
-        - https://en.wikipedia.org/wiki/Silhouette_(clustering)
-
     Args:
         X (array<m,n>): m x n float matrix with datapoints
         z (array<m>): m-length integer vector of cluster assignments
@@ -247,10 +239,9 @@ def euclidean_silhouette(X, z):
     return np.mean((b - a) / np.maximum(a, b))
 
 
-def main():
+def first_example():
     # Gets the dataset
     data_1 = pd.read_csv('data_1.csv')
-    # print(data_1.describe().T)
     # Shows the dataset in a figure
     plt.figure(figsize=(5, 5))
     sns.scatterplot(x='x0', y='x1', data=data_1)
@@ -260,7 +251,7 @@ def main():
 
     # Fit Model
     X = data_1[['x0', 'x1']]
-    model_1 = KMeans()  # <-- Should work with default constructor
+    model_1 = KMeans()
     model_1.fit(X)
 
     # # Compute Silhouette Score
@@ -271,17 +262,19 @@ def main():
     # Plot cluster assignments
     C = model_1.get_centroids()
     K = len(C)
-    # _, ax = plt.subplots(figsize=(5, 5), dpi=100)
-    # sns.scatterplot(x='x0', y='x1', hue=z, hue_order=range(K), palette='tab10', data=X, ax=ax)
-    # sns.scatterplot(x=C[:, 0], y=C[:, 1], hue=range(K), palette='tab10', marker='*', s=250, edgecolor='black', ax=ax)
-    # ax.legend().remove()
+    _, ax = plt.subplots(figsize=(5, 5), dpi=100)
+    sns.scatterplot(x='x0', y='x1', hue=z, hue_order=range(K), palette='tab10', data=X, ax=ax)
+    sns.scatterplot(x=C[:, 0], y=C[:, 1], hue=range(K), palette='tab10', marker='*', s=250, edgecolor='black', ax=ax)
+    ax.legend().remove()
 
 
-def main2():
+def second_example():
     data_2 = pd.read_csv('data_2.csv')
+    plt.figure(figsize=(5, 5))
+    sns.scatterplot(x='x0', y='x1', data=data_2)
     # Fit Model
     Xc = data_2[['x0', 'x1']]
-    model_2 = KMeans(k=10, original_data=Xc, iterations=50)  # <-- Feel free to add hyperparameters
+    model_2 = KMeans(k=10, original_data=Xc, iterations=50)
     X = normalize(Xc)
     model_2.fit(X)
 
@@ -297,8 +290,13 @@ def main2():
     sns.scatterplot(x='x0', y='x1', hue=z, hue_order=range(K), palette='tab10', data=X, ax=ax)
     sns.scatterplot(x=C[:, 0], y=C[:, 1], hue=range(K), palette='tab10', marker='*', s=250, edgecolor='black', ax=ax)
     ax.legend().remove()
+
+
+def main():
+    first_example()
+    second_example()
     plt.show()
 
 
 if __name__ == "__main__":
-    main2()
+    main()
