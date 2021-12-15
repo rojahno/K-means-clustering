@@ -117,7 +117,7 @@ def normalize(df):
 ```python
 # Fit Model
 Xc = data_2[['x0', 'x1']]
-model_2 = km.KMeans(k=10, original_data=Xc, iterations=50)  # <-- Feel free to add hyperparameters
+model_2 = km.KMeans(k=10, original_data=Xc, iterations=50) 
 X = normalize(Xc)
 model_2.fit(X)
 
